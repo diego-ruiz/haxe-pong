@@ -9,7 +9,6 @@ class Game extends hxd.App {
     var ballydirection = 1;
     var maxWidth = 700;
     override function init() {
-        //h3d.Engine.backgroundColor = 0xffffff;
         paddle = new h2d.Graphics(s2d);
         paddle.beginFill(0xffffff);
         paddle.drawRect(10, 10, paddleSize, 50);
@@ -38,45 +37,45 @@ class Game extends hxd.App {
         if( K.isDown(K.LEFT) && paddle2.x - 10 >= 0){
             paddle2.x -= 10.0;
         }
-        var ballx = ball.x;
-        var bally = ball.y;
-        if(ballxdirection == 1){
-            if(ballx + 10 > maxWidth){
-                ballxdirection = -1;
-                ballx -= 10;
-            } else {
-                ballx += 10;
-            }
+
+        //var ballx = ball.x;
+        //var bally = ball.y;
+        var paddleCol = new h2d.col.Bounds();
+        paddleCol.set(paddle.x, paddle.y, paddleSize, 50.0);
+        var paddle2Col = new h2d.col.Bounds();
+        paddle2Col.set(paddle2.x, 900, paddleSize, 50.0);
+        var ballCol = new h2d.col.Circle(ball.x, ball.y, 30.0);
+        
+        if(ballCol.collideBounds(paddleCol) || ballCol.collideBounds(paddle2Col)){
+            ballxdirection *= -1;
+            trace(ballCol,paddle2Col,paddle2.x,paddle2.y);
+            ballydirection *= -1;
         } else {
-            if(ballx - 10 < 0){
-                ballxdirection = 1;
-                ballx += 10;
+            if(ballxdirection == 1){
+                if(ball.x + 10 > maxWidth){
+                    ballxdirection = -1;
+                } 
             } else {
-                ballx -= 10;
+                if(ball.x - 10 < 0){
+                    ballxdirection = 1;
+                }
+            }
+            if(ballydirection == 1){
+                if(ball.y + 10 > 900){
+                    ballydirection = -1;
+                }
+            } else {
+                if(ball.y - 10 < 0){
+                    ballydirection = 1;
+                }
             }
         }
-        if(ballydirection == 1){
-            if(bally + 10 > 900){
-                ballydirection = -1;
-                bally -= 10;
-            } else {
-                bally += 10;
-            }
-        } else {
-            if(bally - 10 < 0){
-                ballydirection = 1;
-                bally += 10;
-            } else {
-                bally -= 10;
-            }
-        }
-        ball.x = ballx;
-        ball.y = bally;
+        ball.x += (10 * ballxdirection);
+        ball.y += (10 * ballydirection);
+        
     }
 
     static function main() {
-        //hxd.Res.initEmbed();
-        //inst = new Game();
         new Game();
     }
 }
