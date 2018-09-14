@@ -41,10 +41,10 @@ class Game extends hxd.App {
         //var ballx = ball.x;
         //var bally = ball.y;
         var paddleCol = new h2d.col.Bounds();
-        paddleCol.set(paddle.x, paddle.y, paddleSize, 50.0);
+        paddleCol.set(paddle.x, 10, paddleSize, 50.0);
         var paddle2Col = new h2d.col.Bounds();
         paddle2Col.set(paddle2.x, 900, paddleSize, 50.0);
-        var ballCol = new h2d.col.Circle(ball.x, ball.y, 30.0);
+        var ballCol = new h2d.col.Circle(ball.x+(ballxdirection+10), ball.y+(ballydirection+10), 30.0);
         
         if(ballCol.collideBounds(paddleCol) || ballCol.collideBounds(paddle2Col)){
             ballxdirection *= -1;
